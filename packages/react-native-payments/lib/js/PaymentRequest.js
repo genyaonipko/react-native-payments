@@ -374,7 +374,7 @@ export default class PaymentRequest {
   _closePaymentRequest() {
     this._state = 'closed';
 
-    this._acceptPromiseRejecter(new Error('AbortError'));
+    this._acceptPromiseRejecter(console.log('AbortError'));
 
     // Remove event listeners before aborting.
     this._removeEventListeners();
@@ -431,7 +431,7 @@ export default class PaymentRequest {
       this._acceptPromiseResolver = resolve;
       this._acceptPromiseRejecter = reject;
       if (this._state !== 'created') {
-        return reject(new Error('InvalidStateError'));
+        return reject(console.log('InvalidStateError'));
       }
 
       this._state = 'interactive';
@@ -453,13 +453,13 @@ export default class PaymentRequest {
     return new Promise((resolve, reject) => {
       // We can't abort if the PaymentRequest isn't shown or already closed
       if (this._state !== 'interactive') {
-        return reject(new Error('InvalidStateError'));
+        return reject(console.log('InvalidStateError'));
       }
 
       // Try to dismiss the UI
       NativePayments.abort(err => {
         if (err) {
-          return reject(new Error('InvalidStateError'));
+          return reject(console.log('InvalidStateError'));
         }
 
         this._closePaymentRequest();
@@ -477,4 +477,3 @@ export default class PaymentRequest {
     );
   }
 }
-
